@@ -185,14 +185,15 @@ class Bracket():
 bracket_historical = Bracket(method='historical')
 print('Coin Flip Bracket Using Weighted Method')
 bracket_historical.play_bracket()     
-
-              
+print('')
+print('')           
 bracket_weighted = Bracket(method='weighted')
 print('Coin Flip Bracket Using Weighted Method')
 bracket_weighted.play_bracket()
-
-
+print('')
+print('')
 bracket_random = Bracket(method='fifty')
+print('Coin Flip Bracket Using Random Method')
 bracket_random.play_bracket()
 
 
