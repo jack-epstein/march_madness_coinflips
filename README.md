@@ -16,12 +16,12 @@ This will fill out three brackets for you using three different methodologies. F
   If these aren't risky enough for you, then let's use pure random chance. Nothing special, every coin is a 50/50 shot.
 
 <br> <br>
-Have fun and don't blame me when you finish at the bottom of your pool!
+#### Have fun and don't blame me when you finish at the bottom of your pool!
 
 
 
 
-
+<br><br><br><br>
 Data comes from: http://mcubed.net/ncaab/seeds.shtml
 
 
