@@ -181,7 +181,7 @@ class Bracket():
         return champ        
         
 bracket_historical = Bracket(method='historical')
-print('Coin Flip Bracket Using Weighted Method')
+print('Coin Flip Bracket Using Historical Method')
 bracket_historical.play_bracket()     
 print('')
 print('')           
