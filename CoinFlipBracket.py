@@ -142,7 +142,6 @@ class Bracket():
         return next_round_list
     
     def play_bracket(self):
-        teams = [(1,16),(8,9),(4,13),(5,12),(3,14),(6,11),(7,10),(2,15)]
         
         regional_winners = np.zeros(4)
         for i in range(4):
