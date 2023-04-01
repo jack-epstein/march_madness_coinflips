@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 from scipy.stats import norm
+import sys
 
 #USED HISTORIC DATA TO GET WIN PERCENTAGES IN ALL POSSIBLE SEED MATCHUPS (http://mcubed.net/ncaab/seeds.shtml)
     #did not fit to a distribution, only used empirical totals
@@ -12,6 +13,7 @@ from scipy.stats import norm
     #when no matchups have ever occured and are exponentially unlikely, use 0.5
     #when no matchups have ever occured with 1 much higher seed (ie 1v15), use 0.99
     #when its historically 100%, change to 99%
+    #23-04-01 NOTE: given recent upset history, could be worth re-evaluating these weights
 empirical_dict = {}
 empirical_dict[1] = {1:0.5,2:0.539,3:0.634,4:0.711,5:0.839,6:0.706,7:0.857,8:0.798,9:0.901,
                      10:0.857,11:0.556,12:0.99,13:0.99,14:0.99,15:0.99,16:0.993}
@@ -179,7 +181,8 @@ class Bracket():
             print(champ)
         
         return champ        
-        
+
+"""        
 bracket_historical = Bracket(method='historical')
 print('Coin Flip Bracket Using Historical Method')
 bracket_historical.play_bracket()     
@@ -212,3 +215,17 @@ plt.bar(np.unique(all_winners, return_counts=True)[0], np.unique(all_winners, re
 plt.xlabel('Seed')
 plt.ylabel('Number of Regional Wins')
 plt.show()
+"""
+
+
+def main():
+    bracket_type = sys.argv[1]
+    
+    bracket = Bracket(method=bracket_type)
+    print(f'Coin Flip Bracket Using {bracket_type} Method')
+    bracket.play_bracket()     
+    print('')
+    
+    
+if __name__ == "__main__":
+    main()
