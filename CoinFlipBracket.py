@@ -170,7 +170,7 @@ def main():
     
     
     #check law of large numbers for bracket
-    num_iter = 1000
+    num_iter = 10000
     all_winners = np.zeros(num_iter)
     for i in range(num_iter):
 
