@@ -49,7 +49,7 @@ class Bracket():
         inputs: seed_1, seed_2 (int) the seeds of both teams competing
         outputs: seed (int) -- the winner of the matchups'''
         
-        if self.method == 'fifty':
+        if self.method == 'random':
             check = random.random()
             #need to handle even seeds in semis or finals
             if seed_1 == seed_2:
@@ -91,29 +91,6 @@ class Bracket():
                 return seed_1
             else:
                 return seed_2
-
-        elif self.method == 'weighted':
-            check = random.random()
-        #need to handle even seeds in semis or finals
-            if seed_1 == seed_2:
-                if check < 0.5:
-                    if self.verbose == True:
-                        print("first team wins")
-                    return seed_1
-                else:
-                    if self.verbose == True:
-                        print("second team wins")
-                    return seed_2
-        
-        #picking probabilistically based on the difference in seeding
-            total = seed_1+seed_2 #get total score of 1 seeds
-            selection = random.randint(1,total) #randomly draw an integer in that range
-                
-            #using the lower seed as a cutoff, evaluate where that random number falls
-            if selection <= seed_1:
-                return seed_2
-            else:
-                return seed_1
         else:
             return "Need proper picking method: select from ['fifty','historical','weighted']"
         
@@ -180,42 +157,7 @@ class Bracket():
         if self.verbose == True:
             print(champ)
         
-        return champ        
-
-"""        
-bracket_historical = Bracket(method='historical')
-print('Coin Flip Bracket Using Historical Method')
-bracket_historical.play_bracket()     
-print('')
-print('')           
-bracket_weighted = Bracket(method='weighted')
-print('Coin Flip Bracket Using Weighted Method')
-bracket_weighted.play_bracket()
-print('')
-print('')
-bracket_random = Bracket(method='fifty')
-print('Coin Flip Bracket Using Random Method')
-bracket_random.play_bracket()
-
-
-#check law of large numbers for historical bracket
-num_iter = 1000
-all_winners = np.zeros(num_iter)
-for i in range(num_iter):
-    
-    bracket = Bracket(method='historical', verbose=False)
-    winner = bracket.play_bracket()
-    
-    all_winners[i]=winner[0]
-
-print("Share of Wins by Seed in",num_iter,"iterations")
-print(np.unique(all_winners, return_counts=True)[1]/num_iter)
-plt.title('Final Four Trips by Seed')
-plt.bar(np.unique(all_winners, return_counts=True)[0], np.unique(all_winners, return_counts=True)[1])
-plt.xlabel('Seed')
-plt.ylabel('Number of Regional Wins')
-plt.show()
-"""
+        return champ
 
 
 def main():
@@ -225,6 +167,25 @@ def main():
     print(f'Coin Flip Bracket Using {bracket_type} Method')
     bracket.play_bracket()     
     print('')
+    
+    
+    #check law of large numbers for bracket
+    num_iter = 1000
+    all_winners = np.zeros(num_iter)
+    for i in range(num_iter):
+
+        bracket = Bracket(method=bracket_type, verbose=False)
+        winner = bracket.play_bracket()
+
+        all_winners[i]=winner[0]
+
+    print("Share of Wins by Seed in",num_iter,"iterations")
+    print(np.unique(all_winners, return_counts=True)[1]/num_iter)
+    plt.title('Final Four Trips by Seed')
+    plt.bar(np.unique(all_winners, return_counts=True)[0], np.unique(all_winners, return_counts=True)[1])
+    plt.xlabel('Seed')
+    plt.ylabel('Number of Regional Wins')
+    plt.show()
     
     
 if __name__ == "__main__":
