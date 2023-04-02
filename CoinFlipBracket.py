@@ -92,7 +92,7 @@ class Bracket():
             else:
                 return seed_2
         else:
-            return "Need proper picking method: select from ['fifty','historical','weighted']"
+            return "Need proper picking method: select from ['random','historical']"
         
         
     def play_round(self, matchup_list):
