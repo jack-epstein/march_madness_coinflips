@@ -5,6 +5,8 @@
     #when no matchups have ever occured with 1 much higher seed (ie 1v15), use 0.99
     #when its historically 100%, change to 99%
     #23-04-01 NOTE: given recent upset history, could be worth re-evaluating these weights
+
+# GOAL: SCRAPE THIS WEBSITE WITH BEAUTIFUL SOUP AND MAKE THE DICTIONARY DYNAMIC
 empirical_dict = {}
 empirical_dict[1] = {1:0.5,2:0.545,3:0.634,4:0.705,5:0.826,6:0.706,7:0.857,8:0.795,9:0.905,
                      10:0.857,11:0.556,12:0.99,13:0.99,14:0.99,15:0.99,16:0.987}
