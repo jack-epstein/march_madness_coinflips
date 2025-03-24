@@ -16,9 +16,15 @@ This will fill out one of three brackets for you using different methodologies. 
 #### Have fun and don't blame me when you finish at the bottom of your pool!
 
 
-
-
-<br><br><br><br>
+<br><br><br>
 Data comes from: http://mcubed.net/ncaab/seeds.shtml
+- Used historic data to get win percentages in all possible seed matchups
+- Most of the Beautiful Soup parsing in this directory comes from ChatGPT
+- I did not fit to a distribution, only used empirical totals
+- Only need to look for the higher seed in any given pairing
+- When no matchups have ever occured and are very unlikely, use 0.5
+- When no matchups have ever occured with 1 much higher seed (ie 1v15), use 0.99
+- When its historically 100%, change to 99%
+- 23-04-01 NOTE: given recent upset history, could be worth re-evaluating these weights
 
 

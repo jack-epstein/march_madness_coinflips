@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
-
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 import sys
-
-import empirical_data
 
 
 class Bracket():
     def __init__(self, method: str ='random', verbose: bool = True):
         self.method = method  # method can be ['random', 'historical']
         self.verbose = verbose  # print out all rounds
+        with open("empirical_history_dict.json") as f:
+            self.game_probability_dict = json.load(f)
 
     def picker(self, seed_1: int, seed_2: int) -> int:
         """method to pick a winner between 2 seeds
@@ -53,10 +53,10 @@ class Bracket():
             # get better seed
             if seed_1 <= seed_2:
                 # get prob of seed 1 winning
-                prob_seed_1 = empirical_data.empirical_dict[seed_1][seed_2]
+                prob_seed_1 = self.game_probability_dict[str(seed_1)][str(seed_2)] / 100
             else:
                 # get prob of seed 2 winning
-                prob_seed_1 = 1 - empirical_data.empirical_dict[seed_2][seed_1]
+                prob_seed_1 = 1 - self.game_probability_dict[str(seed_2)][str(seed_1)] / 100
                 
             #compare random number to probability of seed 1 winning
             if check <= prob_seed_1:
@@ -64,7 +64,7 @@ class Bracket():
             else:
                 return seed_2
         else:
-            return "Need proper picking method: select from ['random','historical']"
+            return "Need proper picking method: select from ['random', 'historical']"
         
         
     def play_round(self, matchup_list: list) -> list:
