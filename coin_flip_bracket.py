@@ -1,6 +1,19 @@
 import streamlit as st
 
-from CoinFlipBracket import Bracket
+import bracket
+
+
+# move this all down
+br = bracket.BracketSimulator(method='historical')
+regionals = [
+    bracket.RegionalBracket(round_w_16=bracket.ROUND_1),
+    bracket.RegionalBracket(round_w_16=bracket.ROUND_1),
+    bracket.RegionalBracket(round_w_16=bracket.ROUND_1),
+    bracket.RegionalBracket(round_w_16=bracket.ROUND_1)
+]
+for regional in regionals:
+    br.play_regional_bracket(regional)
+br.play_final_four(regionals[0], regionals[1], regionals[2], regionals[3])
 
 
 def skip_lines(n_lines: int):

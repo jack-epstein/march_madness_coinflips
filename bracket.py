@@ -32,13 +32,26 @@ class FinalFour:
     finals_matchup: Matchup | None = None
 
 
+ROUND_1 = BracketRound(
+    matchups=[
+        Matchup(team_1=1, team_2=16),
+        Matchup(team_1=8, team_2=9),
+        Matchup(team_1=4, team_2=13),
+        Matchup(team_1=5, team_2=12),
+        Matchup(team_1=3, team_2=14),
+        Matchup(team_1=6, team_2=11),
+        Matchup(team_1=7, team_2=10),
+        Matchup(team_1=2, team_2=15)
+    ]
+)
+
+
 # add a bracket data object which stores the results, rather than a list of tuples
 class BracketSimulator():
-    def __init__(self, method: str ='historical', verbose: bool = True):
+    def __init__(self, method: str ='historical'):
         if method not in {'historical', 'random'}:
             raise ValueError("Need proper picking method: select from ['random', 'historical']")
         self.method = method  # method can be ['random', 'historical']
-        self.verbose = verbose  # print out all rounds
         with open("empirical_history_dict.json") as f:
             self.game_probability_dict = json.load(f)
     
