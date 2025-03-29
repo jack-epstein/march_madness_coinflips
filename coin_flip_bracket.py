@@ -3,19 +3,6 @@ import streamlit as st
 import bracket
 
 
-# move this all down
-br = bracket.BracketSimulator(method='historical')
-regionals = [
-    bracket.RegionalBracket(round_w_16=bracket.ROUND_1),
-    bracket.RegionalBracket(round_w_16=bracket.ROUND_1),
-    bracket.RegionalBracket(round_w_16=bracket.ROUND_1),
-    bracket.RegionalBracket(round_w_16=bracket.ROUND_1)
-]
-for regional in regionals:
-    br.play_regional_bracket(regional)
-br.play_final_four(regionals[0], regionals[1], regionals[2], regionals[3])
-
-
 def skip_lines(n_lines: int):
     """Function to space out the st write objects to a desired place."""
     for i in range(n_lines):
@@ -40,8 +27,10 @@ def print_out_first_round():
         if i % 2 == 1:
             st.write('')
 
+
 st.header('March Madness')
 
+# user chooses the type of bracket they want to play
 button_cols = st.columns(3)
 st.divider()
 with button_cols[0]:
@@ -49,134 +38,107 @@ with button_cols[0]:
 with button_cols[2]:
     run_bracket_random = st.button("Run Random Coins Bracket")
 
+# once the button is clicked we simluated the bracket
+any_button_clicked = run_bracket_random or run_bracket_weighted
+if run_bracket_weighted:
+    completed_bracket = bracket.play_full_bracket(bracket_method="historical")
+if run_bracket_random:
+    completed_bracket = bracket.play_full_bracket(bracket_method="random")
+
 high_level_columns = st.columns(3)
+# print the first 2 regionals
 with high_level_columns[0]:
     with st.container():
         lower_level_columns = st.columns(5)
         with lower_level_columns[0]:
             print_out_first_round()
         
-        with lower_level_columns[1]:
-            # NEED TO TRIM THIS INTO A FUNCTION
-            st.write('')
-            seed = '1'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(4)
-            seed = '8'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(3)
-            seed = '4'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(4)
-            seed = '5'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(4)
-            seed = '3'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(3)
-            seed = '6'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(4)
-            seed = '7'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(3)
-            seed = '2'
-            st.markdown(f":gray-background[{seed}]")
+        if any_button_clicked:
+            # Round of 32
+            with lower_level_columns[1]:
+                skip_lines(1)
+                for i, matchup in enumerate(completed_bracket.regionals[0].round_w_16.matchups):
+                    st.markdown(f":gray-background[{matchup.winner}]")
+                    if i in [0, 2, 3, 5, 7]:
+                        skip_lines(3)
+                    elif i == 8:
+                        skip_lines(0)
+                    else:
+                        skip_lines(4)
 
-            skip_lines(7)
-            seed = '1'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(3)
-            seed = '8'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(4)
-            seed = '4'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(4)
-            seed = '5'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(3)
-            seed = '3'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(4)
-            seed = '6'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(3)
-            seed = '7'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(4)
-            seed = '2'
-            st.markdown(f":gray-background[{seed}]")
+                skip_lines(5)
+                for i, matchup in enumerate(completed_bracket.regionals[1].round_w_16.matchups):
+                    st.markdown(f":gray-background[{matchup.winner}]")
+                    if i in [0, 3, 5]:
+                        skip_lines(3)
+                    elif i == 8:
+                        skip_lines(0)
+                    else:
+                        skip_lines(4)
 
-        with lower_level_columns[2]:
-            # NEED TO TRIM THIS INTO A FUNCTION
-            skip_lines(4)
-            seed = '1'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(10)
-            seed = '4'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(10)
-            seed = '3'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(9)
-            seed = '2'
-            st.markdown(f":gray-background[{seed}]")
+            # Sweet Sixteen
+            with lower_level_columns[2]:
+                skip_lines(4)
+                for i, matchup in enumerate(completed_bracket.regionals[0].round_w_8.matchups):
+                    st.markdown(f":gray-background[{matchup.winner}]")
+                    if i in [0]:
+                        skip_lines(10)
+                    elif i == 4:
+                        skip_lines(0)
+                    else:
+                        skip_lines(9)
 
-            skip_lines(14)
-            seed = '1'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(9)
-            seed = '4'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(10)
-            seed = '3'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(10)
-            seed = '2'
-            st.markdown(f":gray-background[{seed}]")
-        
-        with lower_level_columns[3]:
-            # NEED TO TRIM THIS INTO A FUNCTION
-            skip_lines(10)
-            seed = '1'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(23)
-            seed = '2'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(25)
-            seed = '1'
-            st.markdown(f":gray-background[{seed}]")
-            skip_lines(23)
-            seed = '2'
-            st.markdown(f":gray-background[{seed}]")
+                skip_lines(5)
+                for i, matchup in enumerate(completed_bracket.regionals[1].round_w_8.matchups):
+                    st.markdown(f":gray-background[{matchup.winner}]")
+                    if i in [0, 2]:
+                        skip_lines(10)
+                    elif i == 4:
+                        skip_lines(0)
+                    else:
+                        skip_lines(9)
+            
+            # Elite Eight
+            with lower_level_columns[3]:
+                skip_lines(10)
+                for i, matchup in enumerate(completed_bracket.regionals[0].round_w_4.matchups):
+                    st.markdown(f":gray-background[{matchup.winner}]")
+                    if i == 0:
+                        skip_lines(21)
+                    else:
+                        skip_lines(26)
+                for i, matchup in enumerate(completed_bracket.regionals[1].round_w_4.matchups):
+                    st.markdown(f":gray-background[{matchup.winner}]")
+                    skip_lines(23)
 
-        with lower_level_columns[4]:
-            # NEED TO TRIM THIS INTO A FUNCTION
-            skip_lines(23)
-            seed = '1'
-            st.markdown(f":green-background[{seed}]")
-            skip_lines(50)
-            seed = '2'
-            st.markdown(f":green-background[{seed}]")
+            # Final Four
+            with lower_level_columns[4]:
+                skip_lines(23)
+                regional_champ_1 = completed_bracket.regionals[0].round_w_2.matchups[0].winner
+                st.markdown(f":gray-background[{regional_champ_1}]")
+                skip_lines(50)
+                regional_champ_2 = completed_bracket.regionals[1].round_w_2.matchups[0].winner
+                st.markdown(f":gray-background[{regional_champ_2}]")
 
 
-
+# print the final four
+# JE NEED TO HANDLE THE CASE OF THE SAME SEED MATCHUP
 with high_level_columns[1]:
     with st.container():
         lower_level_columns = st.columns(3)
         with lower_level_columns[1]:
             skip_lines(38)
-            st.markdown('## :green-background[1]')
+            champion = completed_bracket.final_four.finals_matchup.winner
+            st.markdown(f'## :green-background[{champion}]')
             skip_lines(6)
     with st.container(border=True):
         lower_level_columns = st.columns(3)
         with lower_level_columns[0]:
-            st.markdown('### 1')
+            st.markdown(f'### {completed_bracket.regionals[0].bracket_winner}')
         with lower_level_columns[1]:
             st.markdown('#### vs')
         with lower_level_columns[2]:
-            st.markdown('### 1')
+            st.markdown(f'### {completed_bracket.regionals[1].bracket_winner}')
     with st.container():
         st.write('')
 
