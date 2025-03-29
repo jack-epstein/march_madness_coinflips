@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from copy import deepcopy
 import json
 import random
 
@@ -51,10 +52,10 @@ ROUND_1 = BracketRound(
 )
 
 REGIONALS = [
-    RegionalBracket(round_w_16=ROUND_1),
-    RegionalBracket(round_w_16=ROUND_1),
-    RegionalBracket(round_w_16=ROUND_1),
-    RegionalBracket(round_w_16=ROUND_1)
+    RegionalBracket(round_w_16=deepcopy(ROUND_1)),
+    RegionalBracket(round_w_16=deepcopy(ROUND_1)),
+    RegionalBracket(round_w_16=deepcopy(ROUND_1)),
+    RegionalBracket(round_w_16=deepcopy(ROUND_1))
 ]
 
 
