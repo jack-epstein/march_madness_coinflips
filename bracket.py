@@ -68,7 +68,12 @@ class BracketSimulator():
         with open("empirical_history_dict.json") as f:
             self.game_probability_dict = json.load(f)
     
-    def picker(self, seed_1: int, seed_2: int):  # -> int:
+    def picker(self, seed_1: int, seed_2: int) -> int:
+        """Function to pick the winner of any given matchup.
+
+        If we use random coins, its a 50/50 split. If we use historical data, we need to look up
+        the percentages in the stored data dictionary.
+        """
         # need to handle even seeds in semis or finals
         if seed_1 == seed_2:
             return seed_1
@@ -90,14 +95,23 @@ class BracketSimulator():
         else:
             return seed_1 if check < 0.5 else seed_2  
     
-    def play_matchup(self, matchup: Matchup): # -> Matchup:
+    def play_matchup(self, matchup: Matchup) -> Matchup:
+        """Play a matchup by running the picker.
+
+        If seeds are even, we need to clarify which seed wins.
+        """
         matchup.winner = self.picker(seed_1=matchup.team_1, seed_2=matchup.team_2)
         if matchup.team_1 == matchup.team_2:
             check = random.random()
             matchup.tie_breaker = "first" if check < 0.5 else "second"
         return matchup
 
-    def play_round(self, bracket_round: BracketRound): # -> BracketRound | int:
+    def play_round(self, bracket_round: BracketRound) -> BracketRound | int:
+        """Play a given round by looping through Matchups and playing each one.
+
+        We return another BrackRound if it's not the regional final. If it is, we return the
+        champion.
+        """
         [self.play_matchup(matchup) for matchup in bracket_round.matchups]
 
         if len(bracket_round.matchups) == 1:
@@ -113,7 +127,8 @@ class BracketSimulator():
             )
         return next_round
     
-    def play_regional_bracket(self, full_bracket: RegionalBracket): # -> RegionalBracket:
+    def play_regional_bracket(self, full_bracket: RegionalBracket) -> RegionalBracket:
+        """Play a regional bracket by simluating and saving each subsequent round."""
         full_bracket.round_w_8 = self.play_round(full_bracket.round_w_16)
         full_bracket.round_w_4 = self.play_round(full_bracket.round_w_8)
         full_bracket.round_w_2 = self.play_round(full_bracket.round_w_4)
@@ -126,7 +141,13 @@ class BracketSimulator():
             regional_2: RegionalBracket,
             regional_3: RegionalBracket,
             regional_4: RegionalBracket
-        ):
+        ) -> FinalFour:
+        """Play the final four.
+
+        Start by reading the winner of each regional, set up the FinalFour oject and simulate those
+        matchups. In these cases, we may have same seeds, so we need to save the tie breaker
+        strings as well.
+        """
         final_four = FinalFour(
             semis_1=Matchup(team_1=regional_1.bracket_winner, team_2=regional_2.bracket_winner),
             semis_2=Matchup(team_1=regional_3.bracket_winner, team_2=regional_4.bracket_winner)
