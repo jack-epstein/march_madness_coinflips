@@ -31,6 +31,11 @@ class FinalFour:
     semis_2: Matchup
     finals_matchup: Matchup | None = None
 
+@dataclass
+class FullBracket:
+    regionals: list[RegionalBracket]
+    final_four: FinalFour | None = None
+
 
 ROUND_1 = BracketRound(
     matchups=[
@@ -45,9 +50,16 @@ ROUND_1 = BracketRound(
     ]
 )
 
+REGIONALS = [
+    RegionalBracket(round_w_16=ROUND_1),
+    RegionalBracket(round_w_16=ROUND_1),
+    RegionalBracket(round_w_16=ROUND_1),
+    RegionalBracket(round_w_16=ROUND_1)
+]
 
-# add a bracket data object which stores the results, rather than a list of tuples
+
 class BracketSimulator():
+    """Object that picks and plays a full bracket based on weighted or unweighted coins."""
     def __init__(self, method: str ='historical'):
         if method not in {'historical', 'random'}:
             raise ValueError("Need proper picking method: select from ['random', 'historical']")
@@ -126,3 +138,20 @@ class BracketSimulator():
         )
         self.play_matchup(matchup=final_four.finals_matchup)
         return final_four
+
+
+def play_full_bracket(bracket_method: str) -> FullBracket:
+    """Randomly run a full bracket, including regionals and final four."""
+    bracket_simulator = BracketSimulator(method=bracket_method)
+    full_bracket = FullBracket(regionals=REGIONALS)
+
+    for regional in full_bracket.regionals:
+        bracket_simulator.play_regional_bracket(regional)
+    final_four = bracket_simulator.play_final_four(
+        regional_1=full_bracket.regionals[0],
+        regional_2=full_bracket.regionals[1],
+        regional_3=full_bracket.regionals[2],
+        regional_4=full_bracket.regionals[3],
+    )
+    full_bracket.final_four = final_four
+    return full_bracket
