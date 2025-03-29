@@ -35,7 +35,7 @@ def print_second_round(round_of_16: bracket.BracketRound, half: str):
     if half == 'upper':
         for i, matchup in enumerate(round_of_16.matchups):
             st.markdown(f":gray-background[{matchup.winner}]")
-            if i in [0, 2, 3, 5, 7]:
+            if i in [0, 3, 5, 7]:
                 skip_lines(3)
             elif i == 8:
                 skip_lines(0)
@@ -61,7 +61,7 @@ def print_sweet_sixteen(round_of_8: bracket.BracketRound):
     """
     for i, matchup in enumerate(round_of_8.matchups):
         st.markdown(f":gray-background[{matchup.winner}]")
-        if i in [0]:
+        if i in [0, 2]:
             skip_lines(10)
         elif i == 4:
             skip_lines(0)
@@ -82,7 +82,16 @@ def print_elite_eight(round_of_4: bracket.BracketRound):
             skip_lines(26)
 
 
-st.header('March Madness')
+st.header('March Madness Coin Flip Bracket')
+st.markdown(
+    '### 🏀 Do you still need help filling out your bracket this year? Well look no further! 🏀'
+)
+st.markdown(
+    'Using this script, you can fill out your bracket using nothing other than a little basketball'
+    'history and random luck. If you want the odds in your favor, click "Run Weighted Coins'
+    'Bracket", which uses historical ranking matchups to flip a biased coin. If you want pure'
+    'chaos, click "Run Random Coins Bracket". Either way, do not blame me when you lose!'
+)
 
 # user chooses the type of bracket they want to play
 button_cols = st.columns(3)
@@ -116,7 +125,7 @@ with high_level_columns[0]:
                     half='upper'
                 )
 
-                skip_lines(5)
+                skip_lines(4)
                 print_second_round(
                     round_of_16=completed_bracket.regionals[1].round_w_16,
                     half='lower'
@@ -126,7 +135,7 @@ with high_level_columns[0]:
             with lower_level_columns[2]:
                 skip_lines(4)
                 print_sweet_sixteen(round_of_8=completed_bracket.regionals[0].round_w_8)
-                skip_lines(5)
+                skip_lines(4)
                 print_sweet_sixteen(round_of_8=completed_bracket.regionals[1].round_w_8)
             
             # Elite Eight
@@ -175,6 +184,7 @@ with high_level_columns[1]:
         with st.container():
             st.write('')
 
+# print the last 2 regionals
 with high_level_columns[2]:
     with st.container():
         lower_level_columns = st.columns(5)
@@ -218,3 +228,5 @@ with high_level_columns[2]:
                 skip_lines(50)
                 regional_champ_4 = completed_bracket.regionals[3].bracket_winner
                 st.markdown(f":gray-background[{regional_champ_4}]")
+
+st.write('Historical data scraped from http://mcubed.net/ncaab/seeds.shtml')
